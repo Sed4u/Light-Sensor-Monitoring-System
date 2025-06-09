@@ -1,0 +1,18 @@
+apiVersion: 1
+
+datasources:
+  - name: influxdb
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    uid: belhh4mij7ksgb
+    jsonData:
+      version: Flux
+      organization: mds
+      defaultBucket: lumina
+      minTimeInterval: 5s
+      maxSeries: 1000
+    secureJsonData:
+      token: mds-token
+    editable: true
+    isDefault: true

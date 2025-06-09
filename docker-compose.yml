@@ -21,6 +21,7 @@ services:
       - grafana-storage:/var/lib/grafana
       - ./grafana.ini:/etc/grafana/grafana.ini
       - ./grafana-provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./dashboards:/etc/grafana/provisioning/dashboards/json
     environment:
       - GF_SECURITY_ADMIN_USER=admin
