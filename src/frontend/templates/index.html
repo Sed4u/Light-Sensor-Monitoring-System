@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light Sensor Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Light Sensor Monitoring System</h1>
+    </header>
+    <main>
+        <div class="container card" style="flex-direction:column; align-items:center;">
+            <img src="https://img.icons8.com/ios-filled/100/000000/light-on.png" alt="Light Sensor" style="margin: 20px 0;">
+            <p style="font-size:1.2em; text-align:center;">
+                This application allows you to monitor, analyze, and receive alerts about ambient light levels in real time.<br>
+                Register or log in to access your personalized dashboard!
+            </p>
+            <ul style="text-align:left; max-width:400px;">
+                <li>📈 Real-time lux data visualization</li>
+                <li>⚡ Set custom warning thresholds</li>
+                <li>🔔 Get notified when light is too high or too low</li>
+                <li>🧮 Calculate average lux over any interval</li>
+            </ul>
+            <div class="button-container" style="margin-top:20px;">
+                <a href="{{ url_for('auth.login') }}" class="button">Login</a>
+                <a href="{{ url_for('auth.register') }}" class="button">Register</a>
+                <a href="{{ url_for('dashboard') }}" class="button">View Dashboard</a>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Light Sensor Project</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

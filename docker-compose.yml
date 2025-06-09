@@ -1,0 +1,85 @@
+services:
+  influxdb:
+    image: influxdb:2.7
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-storage:/var/lib/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=ciscosecpa55
+      - DOCKER_INFLUXDB_INIT_ORG=mds
+      - DOCKER_INFLUXDB_INIT_BUCKET=lumina
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mds-token
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana123
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+    depends_on:
+      - influxdb
+
+  mosquitto:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto-data:/mosquitto/data
+
+  light-simulator:
+    build: .
+    command: python src/light_simulator.py
+    depends_on:
+      - mosquitto
+    volumes:
+      - .:/app
+
+  mqtt-to-influx:
+    build: .
+    command: python src/mqtt_to_influx.py
+    depends_on:
+      - mosquitto
+      - influxdb
+    volumes:
+      - .:/app
+
+  flask-app:
+    build: .
+    command: python src/backend/app.py
+    ports:
+      - "5000:5000"
+    depends_on:
+      - influxdb
+      - mosquitto
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+
+  postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: mds
+      POSTGRES_PASSWORD: mdspass
+      POSTGRES_DB: dbmds
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  influxdb-storage:
+  grafana-storage:
+  mosquitto-data:
+  postgres-data:
