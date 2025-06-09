@@ -70,7 +70,7 @@ This project is a **full-stack application** for monitoring, analyzing, and visu
 ### Notes
 
 - All configuration (database, tokens, ports) is handled via environment variables and Docker Compose.
-- The application is fully containerized; **no local Python or database setup is required**.
+- The application is fully containerized; **no local Python or database setup is required**. If you want to see the user data itself, you can use pgAdmin 4 and connect to the database hosted with docker.
 - The light simulator will generate fake lux data for all users in the database.
 
 ## Stopping the Application
